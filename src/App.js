@@ -11,6 +11,11 @@ function App() {
   const handleClick = () => {
     console.log("socketUrl ==>", socketUrl);
 
+    window.bridge.wsUrl((event, settings) => {
+      console.log(settings, event);
+      setSocketUrl(settings);
+    });
+
     console.log("window ==>", window);
 
     const ws = new WebSocket(socketUrl);
