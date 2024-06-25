@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from "react";
 
 function App() {
+  const [socketUrl, setSocketUrl] = useState("");
+
+  window.bridge.wsUrl((event, settings) => {
+    console.log(settings);
+    setSocketUrl(settings);
+  });
+
+  const handleClick = () => {
+    const ws = new WebSocket(socketUrl);
+
+    ws.onopen = function () {
+      console.log("Connected to WebSocket server");
+
+      const dummyData = [{name: "o90ij"}, {name: "Dummy2"}, {name: "Dummy3"}];
+
+      ws.send(JSON.stringify(dummyData));
+    };
+
+    ws.onerror = function (error) {
+      console.error("WebSocket error: ", error);
+    };
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>WebSocket URL: {socketUrl}</p>
       </header>
+
+      <div>
+        <button onClick={handleClick}>Send data</button>
+      </div>
     </div>
   );
 }
