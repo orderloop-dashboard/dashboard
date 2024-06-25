@@ -9,6 +9,10 @@ function App() {
   });
 
   const handleClick = () => {
+    console.log("socketUrl ==>", socketUrl);
+
+    console.log("window ==>", window);
+
     const ws = new WebSocket(socketUrl);
 
     ws.onopen = function () {

@@ -16,9 +16,11 @@ async function createWindow() {
     },
   });
 
-  mainWindow.loadURL("http://localhost:3001/");
+  mainWindow.loadURL("https://dashboard-rouge-two.vercel.app/");
 
   mainWindow.webContents.openDevTools();
+
+  console.log("bonjour ==>", bonjour);
 
   try {
     bonjour.find({type: "ws"}, function (service) {
