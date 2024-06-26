@@ -1,47 +1,22 @@
-import React, {useState} from "react";
+import React from "react";
+import ListModule from "./ListModule";
+import OrderModule from "./OrderModule";
+import SendModule from "./SendModule";
 
 function App() {
-  const [socketUrl, setSocketUrl] = useState("");
-
-  window.bridge.wsUrl((event, settings) => {
-    console.log(settings);
-    setSocketUrl(settings);
-  });
-
-  const handleClick = () => {
-    console.log("socketUrl ==>", socketUrl);
-
-    window.bridge.wsUrl((event, settings) => {
-      console.log(settings, event);
-      setSocketUrl(settings);
-    });
-
-    console.log("window ==>", window);
-
-    const ws = new WebSocket(socketUrl);
-
-    ws.onopen = function () {
-      console.log("Connected to WebSocket server");
-
-      const dummyData = [{name: "o90ij"}, {name: "Dummy2"}, {name: "Dummy3"}];
-
-      ws.send(JSON.stringify(dummyData));
-    };
-
-    ws.onerror = function (error) {
-      console.error("WebSocket error: ", error);
-    };
+  const handleSendFile = () => {
+    window.electron.sendDatabaseFile();
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>WebSocket URL: {socketUrl}</p>
-      </header>
+      <button onClick={handleSendFile}>Send Database File</button>
 
-      <div>
-        <button onClick={handleClick}>Send data</button>
-      </div>
+      <ListModule />
+
+      <OrderModule />
+
+      <SendModule />
     </div>
   );
 }

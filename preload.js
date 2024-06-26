@@ -1,8 +1,10 @@
-const contextBridge = require("electron").contextBridge;
-const ipcRenderer = require("electron").ipcRenderer;
+const {contextBridge, ipcRenderer} = require("electron");
 
-contextBridge.exposeInMainWorld("bridge", {
-  wsUrl: (message) => {
-    ipcRenderer.on("wsUrl", message);
+contextBridge.exposeInMainWorld("electron", {
+  dbQuery: async (query, params) => {
+    return ipcRenderer.invoke("db-query", query, params);
+  },
+  sendDatabaseFile: () => {
+    ipcRenderer.send("send-database-file");
   },
 });
